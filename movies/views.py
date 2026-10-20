@@ -1,8 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Avg, Count
-from .models import Movie, Review, Rating
+from .models import Movie, Review
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import User
 
+
+@staff_member_required
+def statistics(request):
+    user_comment_stats = User.objects.annotate(comment_number=Count('review')).order_by(
+        '-comment_number'
+    )
+    template_data = {}
+    template_data['title'] = 'User Statistics'
+    template_data['users'] = user_comment_stats
+
+    return render(request, 'movies/statistics.html',
+                  {'template_data': template_data})
 
 # Create your views here.
 @login_required

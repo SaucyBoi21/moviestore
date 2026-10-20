@@ -60,6 +60,10 @@ initial-scale=1"
             <a class="nav-link" href="{% url 'home.about' %}">About</a>
             <a class="nav-link" href="{% url 'movies.index' %}">Movies</a>
             <a class="nav-link" href="{% url 'cart.index' %}">Cart</a>
+            <!-- check user is an admin / staff -->
+            {% if user.is_active and user.is_staff %}
+            <a class="nav-link" href="{% url 'movies.statistics' %}">Statistics</a>
+            {% endif %}
             <div class="vr bg-white mx-2 d-none d-lg-block"></div>
             {% if user.is_authenticated %}<a class="nav-link"
               href="{% url 'accounts.orders' %}">Orders
