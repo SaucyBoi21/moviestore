@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col mx-auto mb-3">
+        <h2>User Statistics</h2>
+        <hr />
+        <table summary="User comments">
+            <thead>
+                <tr>
+                    <th>User</th><th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commenter in template_data.users %}
+                    <tr>
+                        <th> {{ commenter.username }}</th>
+                        <td> {{ commenter.comment_number }}</td>
+                    </tr>
+                {% empty %}
+                <tr>
+                    No users found.
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,7 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Movie, Review
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import User
 
+
+@staff_member_required
+def statistics(request):
+    user_comment_stats = User.objects.annotate(comment_number=Count('review')).order_by(
+        '-comment_number'
+    )
+    template_data = {}
+    template_data['title'] = 'User Statistics'
+    template_data['users'] = user_comment_stats
+
+    return render(request, 'movies/statistics.html',
+                  {'template_data': template_data})
 
 # Create your views here.
 @login_required
@@ -37,10 +51,23 @@ def index(request):
 def show(request, id):
     movie = Movie.objects.get(id=id)
     reviews = Review.objects.filter(movie=movie)
+
+    rating_stats = Rating.objects.filter(movie=movie).aggregate(
+        average_rating=Avg('value'),
+        rating_count=Count('id')
+    )
+    
+    user_rating = None
+    if request.user.is_authenticated:
+        user_rating = Rating.objects.filter(movie=movie, user=request.user).first()
+    
     template_data = {}
     template_data['title'] = movie.name
     template_data['movie'] = movie
     template_data['reviews'] = reviews
+    template_data['average_rating'] = rating_stats['average_rating']
+    template_data['rating_count'] = rating_stats['rating_count']
+    template_data['user_rating'] = user_rating 
     return render(request, 'movies/show.html',
                   {'template_data': template_data})
     
@@ -69,4 +96,20 @@ def flag_review(request, id, review_id):
     review = get_object_or_404(Review, id=review_id)
     review.inappropriate = True
     review.save()
+    return redirect('movies.show', id=id)
+
+@login_required
+def rate_movie(request, id):
+    movie = get_object_or_404(Movie, id=id)
+    if request.method == 'POST':
+        try: 
+            value = int(request.POST.get('rating', 0))
+        except ValueError:
+            value = 0
+        if 1 <= value <= 5:
+            Rating.objects.update_or_create(
+                movie=movie,
+                user=request.user,
+                defaults={'value': value}
+            )
     return redirect('movies.show', id=id)
