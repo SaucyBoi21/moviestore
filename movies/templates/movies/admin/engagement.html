@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+  <h2>Most Purchased</h2>
+  {% if most_bought and most_bought.times_bought %}
+    <p>{{ most_bought.name }}: {{ most_bought.times_bought }} purchased</p>
+  {% else %}
+    <p>No purchases yet.</p>
+  {% endif %}
+
+  <h2>Most Reviewed</h2>
+  {% if most_reviewed and most_reviewed.times_reviewed %}
+    <p>{{ most_reviewed.name }}: {{ most_reviewed.times_reviewed }} reviews</p>
+  {% else %}
+    <p>No reviews yet.</p>
+  {% endif %}
+{% endblock %}
