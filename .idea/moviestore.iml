@@ -12,18 +12,18 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="~/Desktop/school/fall26/CS2340/moviestore/venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.12 (moviesstore)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-  <component name="PackageRequirementsSettings" />
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />
+    <option name="myDocStringFormat" value="Plain" />
   </component>
-  <component name="ReSTService" />
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
@@ -32,5 +32,4 @@
       </list>
     </option>
   </component>
-  <component name="TestRunnerService" />
 </module>

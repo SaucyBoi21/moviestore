@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="p-3">
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col mx-auto mb-3">
+                    <h2>Purchase Statistics</h2>
+                    <hr />
+
+                    <div class="mb-3">
+                        <a href="?view=top"
+                           class="btn btn-sm {% if template_data.show_top %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                            Top user(s) only
+                        </a>
+                        <a href="?"
+                           class="btn btn-sm {% if not template_data.show_top %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                            All users
+                        </a>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                        <tr><th>User</th><th>Movies Purchased</th></tr>
+                        </thead>
+                        <tbody>
+                        {% for u in template_data.users %}
+                            <tr>
+                                <th>{{ u.username }}</th>
+                                <td>{{ u.movies_purchased }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="2">No purchases found.</td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
