@@ -1,5 +1,10 @@
 from django.contrib import admin
+from django.urls import path
+from django.template.response import TemplateResponse
+from django.db.models import Sum, Count, Value, Q
+from django.db.models.functions import Coalesce
 from .models import Movie, Review, Rating
+
 class MovieAdmin(admin.ModelAdmin):
     ordering = ['name']
     search_fields = ['name']
