@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:id>/review/<int:review_id>/delete/', views.delete_review, name='movies.delete_review'),
     path('<int:id>/review/<int:review_id>/flag/', views.flag_review, name='movies.flag_review'),
     path('<int:id>/rate/', views.rate_movie, name='movies.rate'),
+    path('purchase-statistics/', views.purchase_statistics, name='movies.purchase_statistics'),
 ]

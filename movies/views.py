@@ -1,5 +1,9 @@
+from pydoc_data.topics import topics
+
+from django.db.models import Count, Avg, Sum
+from django.db.models.functions import Coalesce
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Movie, Review
+from .models import Movie, Review, Rating
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
@@ -17,7 +21,36 @@ def statistics(request):
     return render(request, 'movies/statistics.html',
                   {'template_data': template_data})
 
-# Create your views here.
+@staff_member_required
+def purchase_statistics(request):
+    users = (
+        User.objects
+        .annotate(movies_purchased=Coalesce(Sum('order__item__quantity'), 0))
+        .filter(movies_purchased__gt=0)
+        .order_by('-movies_purchased', 'username')
+    )
+
+    show_top = request.GET.get('view') == 'top'
+
+    # Optional list size: blank, invalid, or < 1 means "all users"
+    limit_raw = request.GET.get('limit', '').strip()
+    limit = int(limit_raw) if limit_raw.isdigit() and int(limit_raw) > 0 else None
+    if show_top:
+        leader = users.first()
+        if leader:
+                users = users.filter(movies_purchased=leader.movies_purchased)
+    elif limit:
+        users = users[:limit]
+
+    template_data = {
+        'title': 'Purchase Statistics',
+        'users': users,
+        'show_top': show_top,
+        'limit': limit,
+    }
+    return render(request, 'movies/purchase_statistics.html',
+                  {'template_data': template_data})
+
 @login_required
 def edit_review(request, id, review_id):
     review = get_object_or_404(Review, id=review_id)
