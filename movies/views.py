@@ -1,7 +1,4 @@
-from pydoc_data.topics import topics
-
-from django.db.models import Count, Avg, Sum
-from django.db.models.functions import Coalesce
+from django.db.models.aggregates import Avg, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Movie, Review, Rating
 from django.contrib.auth.decorators import login_required
