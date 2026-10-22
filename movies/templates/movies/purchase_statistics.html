@@ -16,6 +16,11 @@
                            class="btn btn-sm {% if not template_data.show_top %}btn-primary{% else %}btn-outline-primary{% endif %}">
                             All users
                         </a>
+                        <form action="{% url 'movies.purchase_statistics' %}">
+                            {% csrf_token %}
+                            <input type="number" placeholder="# users to view" class="" id="limit" name="limit"> </input>
+                            <button type = "submit">Filter</button>
+                        </form>
                     </div>
 
                     <table class="table">
